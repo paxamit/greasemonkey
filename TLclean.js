@@ -8,7 +8,7 @@
 // @include     http://www.torrentleech.org/*
 // @include     https://www.torrentleech.org/*
 // @license     MIT
-// @version     0.2
+// @version     0.21
 // @grant       GM_addStyle
 // ==/UserScript==
 

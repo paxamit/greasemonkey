@@ -8,7 +8,7 @@
 // @include        http://www.torrentleech.org/torrents/*
 // @include        https://www.torrentleech.org/torrents/*
 // @grant          none
-// @version        0.2
+// @version        0.21
 // @license        MIT
 // ==/UserScript==
 
