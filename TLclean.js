@@ -6,7 +6,7 @@
 // @include     http://*.torrentleech.org/*
 // @include     https://*.torrentleech.org/*
 // @license     MIT
-// @version     0.21
+// @version     0.22
 // @grant       GM_addStyle
 // ==/UserScript==
 
