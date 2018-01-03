@@ -3,10 +3,8 @@
 // @author      Paxamit
 // @description Hides date and category until row is hovered
 // @namespace   paxamit
-// @include     http://torrentleech.org/*
-// @include     https://torrentleech.org/*
-// @include     http://www.torrentleech.org/*
-// @include     https://www.torrentleech.org/*
+// @include     http://*.torrentleech.org/*
+// @include     https://*.torrentleech.org/*
 // @license     MIT
 // @version     0.21
 // @grant       GM_addStyle

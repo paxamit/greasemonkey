@@ -3,10 +3,8 @@
 // @author         paxamit 
 // @description    groups all releases of same movies and serials into single expendable row
 // @namespace      paxamit
-// @include        http://torrentleech.org/torrents/*
-// @include        https://torrentleech.org/torrents/*
-// @include        http://www.torrentleech.org/torrents/*
-// @include        https://www.torrentleech.org/torrents/*
+// @include        http://*.torrentleech.org/torrents/*
+// @include        https://*.torrentleech.org/torrents/*
 // @grant          none
 // @version        0.21
 // @license        MIT
