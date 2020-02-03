@@ -5,9 +5,15 @@
 // @namespace   paxamit
 // @include     http://*.torrentleech.org/*
 // @include     https://*.torrentleech.org/*
+// @exclude     http://*classic.torrents.org/*
+// @exclude     https://*classic.torrents.org/*
 // @license     MIT
-// @version     0.22
+// @version     0.23
 // @grant       GM_addStyle
 // ==/UserScript==
 
-GM_addStyle("#torrents tr:not(:hover) td.name { color: transparent }")
+GM_addStyle(`
+.torrents tr:not(:hover) div.info { color: transparent !important; }
+.torrents tr:not(:hover) div.info a { color: transparent !important; }
+.torrents tr:not(:hover) div.info .fa-star { color: transparent !important; }
+`)
