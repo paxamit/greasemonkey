@@ -5,8 +5,8 @@
 // @namespace      paxamit
 // @include        http://*.torrentleech.org/torrents/*
 // @include        https://*.torrentleech.org/torrents/*
-// @exclude        http://*classic.torrents.org/*
-// @exclude        https://*classic.torrents.org/*
+// @exclude        http://*classic.torrentleech.org/*
+// @exclude        https://*classic.torrentleech.org/*
 // @grant          none
 // @version        0.24
 // @license        MIT

@@ -3,8 +3,10 @@
 // @author         paxamit
 // @description    change TL site look
 // @namespace      paxamit
-// @include        http://www.torrentleech.org/torrents/browse/*
-// @include        https://www.torrentleech.org/torrents/browse/*
+// @include        http://*.torrentleech.org/torrents/browse/*
+// @include        https:/*.torrentleech.org/torrents/browse/*
+// @exclude        http://*classic.torrentleech.org/*
+// @exclude        https://*classic.torrentleech.org/*
 // @grant          GM_addStyle
 // @version        0.01
 // @license        MIT

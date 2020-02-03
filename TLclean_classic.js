@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        TLclean
+// @name        TLclean_classic
 // @author      Paxamit
 // @description Hides date and category until row is hovered
 // @namespace   paxamit

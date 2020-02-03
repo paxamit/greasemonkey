@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           TLsqueezer
+// @name           TLsqueezer_classic
 // @author         paxamit 
 // @description    groups all releases of same movies and serials into single expendable row
 // @namespace      paxamit
