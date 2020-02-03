@@ -8,7 +8,7 @@
 // @exclude        http://*classic.torrentleech.org/*
 // @exclude        https://*classic.torrentleech.org/*
 // @grant          GM_addStyle
-// @version        0.01
+// @version        0.02
 // @license        MIT
 // @require        https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at         document-end
