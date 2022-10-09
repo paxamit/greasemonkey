@@ -1,21 +1,21 @@
 // ==UserScript==
 // @name           TLsqueezer
-// @author         paxamit 
+// @author         paxamit
 // @description    groups all releases of same movies and serials into single expendable row
 // @namespace      paxamit
-// @include        http://*.torrentleech.org/torrents/*
-// @include        https://*.torrentleech.org/torrents/*
+// @match          http://*.torrentleech.org/torrents/*
+// @match          https://*.torrentleech.org/torrents/*
 // @exclude        http://*classic.torrentleech.org/*
 // @exclude        https://*classic.torrentleech.org/*
-// @grant          none
-// @version        0.25
+// @grant          GM_addStyle
+// @version        0.3
 // @license        MIT
-// @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require        https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at document-end
 // ==/UserScript==
 
 waitForKeyElements ("table.torrents", prettyPlease);
-function prettyPlease(jNode) 
+function prettyPlease(jNode)
 {
     //contentEval(function() {
     //                      movies     serials
@@ -65,7 +65,8 @@ function prettyPlease(jNode)
             color = '#CC0C39'
         }
 
-        return { background: "linear-gradient(to right, #0000 0%,#0000 85%," + color + " 85% ," + color +" 100%)" }
+        //return color;
+        return { background: "linear-gradient(to left, #0000 0%,#0000 85%," + color + " 85% ," + color +" 100%)" }
     }
 
     var elements = $('table.torrents tr')
@@ -76,10 +77,13 @@ function prettyPlease(jNode)
         this.guessed_title_lowercase = this.guessed_title.toLowerCase()
         this.seeds = parseInt(tr.find('.seeders').text())
         this.peers = parseInt(tr.find('.leechers').text())
-        tr.find('.td-category').css( get_seeds_color_css( this.seeds + this.peers ) )
+        var imdb = tr.find('a.imdb-link')
+        this.imdb = imdb ? parseFloat(imdb.text()) : null
+        this.imdb_href = imdb && imdb.length > 0 ? imdb[0].href : "https://www.imdb.com/find?q="+this.guessed_title
+        //tr.find('.td-category').css( get_seeds_color_css( this.seeds + this.peers ) )
     })
 
-    for (var x = 0; x < elements.length; ++x) {
+    for (var x = 1; x < elements.length; ++x) {
         var el = elements[x]
         if (el.processed)
             continue
@@ -98,12 +102,26 @@ function prettyPlease(jNode)
                 found_elements.push("tr[data-tid='" + $(other).attr('data-tid') +"']")
             }
         }
-        if (found_elements.length > 1) {
+        //if (found_elements.length > 1) {
+        if (true) {
+            var imdb = 0;
+            if (el.imdb)
+            {
+                imdb = Math.min(Math.max(el.imdb - 5, 0), 3.5) / 3.5
+            }
+
             var row = '<tr class="torrent squeezer" data-count="' + found_elements.length + '">'
-            + '<td class="td-category" style="font-size: 20px; line-height: 44px">'
-            + found_elements.length + '</td>'
-            + '<td class="td-name"><div class="name"><a href="javascript:">'
-            + el.guessed_title + '</a></div></td>'
+            + '<td class="td-category" >'
+              + '<div class="counter">'
+                + '<div class="box"/>'.repeat(found_elements.length > 1 ? found_elements.length : 0)
+              + '</div>'
+            + '</td>'
+            + '<td class="td-name">'
+              + (el.imdb ?'<div class=imdb_container>' : '') + '<div class=imdb>'
+                + '<a href="' + el.imdb_href + '">' + (el.imdb ? el.imdb : '~') + '</a>'
+              + (el.imdb ? '</div>' : '') + '</div>'
+              + '<div class="name"><a href="javascript:">' + el.guessed_title + '</a></div>'
+            + '</td>'
             + '<td class="td-quickdownload"></td><td></td><td></td><td></td><td></td>'
             + '<td class="td-seeders"><div class="icell seeders">' + seeds + '</div></td>'
             + '<td class="td-leechers"><div class="icell leechers">' + peers + '</div></td><td></td></tr>'
@@ -111,8 +129,15 @@ function prettyPlease(jNode)
             var new_row = $(el).before(row).prev()
             var ids = $(found_elements.join(','))
 
-            ids.hide()
+            new_row.find('.imdb_container .imdb').css({
+                background: el.imdb ? '#f3ce13' : '#f31313',
+                height: Math.ceil(imdb * 40).toString() + 'px'
+            })
+            //new_row.find('.imdb_cintainer').click(function () {
+            //    window.open(el.imdb_href, '_blank').focus();
+            //})
 
+            ids.hide()
             new_row.find('.td-category').css( get_seeds_color_css( seeds + peers ) )
 
             if (ids.find('span.new.label.label-danger').length > 0)
@@ -139,3 +164,61 @@ function prettyPlease(jNode)
         }
     }
 }
+GM_addStyle(`
+.squeezer {
+    font-family: system-ui !important;
+}
+.squeezer .td-category {
+    text-align: center;
+    line-height: 44px;
+    width: 40px;
+}
+.squeezer .counter {
+    padding-left:10px;
+    padding-top:2px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+    align-content: flex-start;
+    height: 40px;
+    justify-content: flex-end;
+}
+.squeezer .counter .box {
+    width: 5px;
+    height: 5px;
+    background-color: #ccc;
+    margin: 2px;
+}
+.squeezer .td-name {
+    line-height: 44px;
+}
+.squeezer .name a {
+    padding: 0;
+    padding-left: 20px;
+    font-size: 17px;
+    display:inline-block;
+}
+.squeezer .imdb {
+   float: left;
+   text-align: center;
+   margin-right: 10px;
+   font-size: 22px;
+   font-weight: bold;
+   width: 40px;
+}
+.squeezer .imdb_container {
+    height: 42px;
+    width: 42px;
+    float: left;
+    margin-top: 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #f3ce13;
+}
+.squeezer .imdb_container .imdb a {
+    color: #ccc;
+    font-size: 22px;
+    text-shadow: #000 0px 0px 3px, #000 0px 0px 3px, #000 0px 0px 3px,
+                 #000 0px 0px 3px, #000 0px 0px 3px; #000 0px 0px 3px;
+}
+`);
