@@ -3,19 +3,19 @@
 // @author         paxamit
 // @description    change TL site look
 // @namespace      paxamit
-// @include        http://*.torrentleech.org/torrents/browse/*
-// @include        https:/*.torrentleech.org/torrents/browse/*
+// @match          http://*.torrentleech.org/torrents/browse/*
+// @match          https://*.torrentleech.org/torrents/browse/*
 // @exclude        http://*classic.torrentleech.org/*
 // @exclude        https://*classic.torrentleech.org/*
 // @grant          GM_addStyle
-// @version        0.02
+// @version        0.1
 // @license        MIT
 // @require        https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at         document-end
 // ==/UserScript==
 
 
-waitForKeyElements ("table.torrents", prettyPlease);
+waitForKeyElements(".table-responsive", prettyPlease);
 
 function prettyPlease(jNode) 
 {
@@ -29,18 +29,23 @@ function prettyPlease(jNode)
     var topBar = $('.container-fluid').prepend( subNavBar.contents() );
     subNavBar.remove()
 
+
+    setTimeout(function() {
     $("span.labelfreeleech").parent().parent().parent().siblings(".td-size").children("div.size").css("color", "#FFDF00")
     $('span.labelfreeleech').parent().remove()
-    $(".imdb-link").each(function(){
+
+    //$("td.td-name .name:not(:has(.imdb-link)) a").each(function(){
+    //    $(this).css("margin-left", "45px");
+    //});
+
+    $("a.imdb-link span:nth-child(3)").remove()
+    $("a.imdb-link").each(function(){
         var imdb = $(this)
+        var rating = parseFloat(imdb.text());
+        imdb.find('.fa-star').css({transform: "scale(" + (0.2 + (rating - 4) / 6) * 1.5 + ")"});
         imdb.parent().prev().append(imdb)
     });
-    //$("div.name span.label").each(function(){
-    //   var label = $(this)
-    //   label.css({float: "right"})
-    //   label.parent().parent().prepend(label)
-    //});
-    //}, 666);
+    }, 200);
 }
 
 GM_addStyle(`
@@ -64,17 +69,11 @@ div.rounded { display: none; }
 .mt-10 { margin-top: 3px; }
 .navbar-collapse { padding: 0px; }
 
-.results .torrents .torrent .name a {
-    font-size: 12px;
-    padding: 2px 0 2px 0;
-    font-family: Arial, sans-serif;
-    color: #b8b8b8 !important;
-}
+
 .results .torrents .torrent .quick-download-img {
     width: 20px;
     height: 20px;
     line-height: 20px;
-
     position: relative;
 }
 .results .torrents .torrent .name {
@@ -85,10 +84,10 @@ div.rounded { display: none; }
     height: 30px;
 }
 .results .torrents .torrent .circle i {
-    font-size: 40px;
+    font-size: 28px;
 }
 #search-app .torrent .td-name {
-    padding-left: 20px;
+    padding-left: 18px;
 }
 .torrents div.info { font-size: 11px !important}
 .td-uploaded-time div.time-ago{ font-size: 11px !important }
@@ -96,16 +95,39 @@ div.rounded { display: none; }
 .td-quick-download { padding-left: 10px !important; }
 .results .torrents .torrent .seeders, .results .torrents .torrent .size {
     color: #b8b8b8;
-    font-size: 13px;
-    font-family: Arial, sans-serif;
+    font-size: 18px;
+    //font-family: system-ui, sans-serif;
 }
 
 .results .torrents .torrent .leechers, .results .torrents .torrent .snatched {
     color: #8f8f8f;
-    font-size: 11px;
-    font-family: Arial, sans-serif;
+    font-size: 18px;
+    //font-family: Arial, sans-serif;
 }
-.imdb-link { float: right; width: 35px; }
+.torrents tr:hover { background-color: #2f2f1b !important; }
 tr.odd { background-color: #0f0f0f !important; }
 tr.even { background-color: #1b1b1b !important; }
+.sq-count { width: 25px; text-align: center; }
+
+.torrents td {
+    /* border-top: 1px solid #653a3a; */
+    border-bottom: 1px solid #282828 !important;
+    border-top: 0px !important;
+}
+
+.fa-star { /*  imdb rating star color */
+    color: #817434;
+}
+
+//.squeezer .name a {
+//   line-height: 35px;
+//}
+
+.imdb-link {
+    float: left; width: 45px;
+}
+
+//td.td-name .name:not(:has(.imdb-link)) a {
+//    margin-left: 45px;
+//}
 `)
